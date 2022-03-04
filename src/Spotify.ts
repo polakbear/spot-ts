@@ -123,7 +123,7 @@ export default class Spotify {
     }
   }
 
-  private handleResponse = (response: AxiosResponse) => {
+  public handleResponse = (response: AxiosResponse) => {
     if (response.status <= 204 && response.status >= 200) {
       return response.data
     }
