@@ -41,38 +41,38 @@ export default class Spotify {
 
   public async getArtist(id: string): Promise<Artist> {
     const response: AxiosResponse = await this.request(`artists/${id}`)
-    const data = this.handleResponse(response)
-    return new Artist(data)
+    return new Artist(this.handleResponse(response))
   }
 
   public async getArtists(ids: string[]): Promise<Artist[]> {
     const response: AxiosResponse = await this.request('artists', {
       ids: `${ids}`
     })
-    const data = this.handleResponse(response)
-    return data.artists.map((artist: any) => new Artist(artist))
+    return this.handleResponse(response).artists.map(
+      (artist: any) => new Artist(artist)
+    )
   }
 
   public async getAlbum(id: string): Promise<Album> {
     const response: AxiosResponse = await this.request(`albums/${id}`)
-    const data = this.handleResponse(response)
-    return new Album(data)
+    return new Album(this.handleResponse(response))
   }
 
   public async getAlbums(ids: string[]): Promise<Album[]> {
     const response: AxiosResponse = await this.request('albums', {
       ids: `${ids}`
     })
-    const data = this.handleResponse(response)
-    return data.albums.map((album: any) => new Album(album))
+
+    return this.handleResponse(response).albums.map(
+      (album: any) => new Album(album)
+    )
   }
 
   public async getGenres(): Promise<string[]> {
     const response: AxiosResponse = await this.request(
       'recommendations/available-genre-seeds'
     )
-    const data = this.handleResponse(response)
-    return data.genres
+    return this.handleResponse(response).genres
   }
 
   public async getRecommendations(
@@ -98,7 +98,7 @@ export default class Spotify {
         }
 
         if (params) {
-          request = { ...request, [this.getKey(method)]: params }
+          request = { ...request, [this.key(method)]: params }
         }
 
         this.client(request).then(resolve, e => {
@@ -110,11 +110,8 @@ export default class Spotify {
     })
   }
 
-  private getKey(method: Method) {
-    return ['PUT', 'POST', 'PATCH', 'DELETE'].some(m => m === method)
-      ? 'data'
-      : 'params'
-  }
+  private key = (method: Method) =>
+    ['PUT', 'POST', 'PATCH', 'DELETE'].includes(method) ? 'data' : 'params'
 
   private createHeaders(): Record<string, any> {
     return {
