@@ -1,1 +1,2 @@
-export * from './Spotify';
+import Spotify from './Spotify';
+export { Spotify };
