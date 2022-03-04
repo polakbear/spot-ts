@@ -1,7 +1,8 @@
-import { SimplifiedTrack } from './Track';
+import { Track } from './Track';
+import { SimplifiedArtist } from './Artist';
 export declare class Recommendations {
     seeds: RecommendationsSeed[];
-    tracks: SimplifiedTrack[];
+    tracks: Track<SimplifiedArtist>[];
 }
 export interface RecommendationsSeed {
     afterFilteringSize: number;

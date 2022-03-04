@@ -1,8 +1,9 @@
-import { SimplifiedTrack } from './Track'
+import { Track } from './Track'
+import { SimplifiedArtist } from './Artist'
 
 export class Recommendations {
   seeds: RecommendationsSeed[]
-  tracks: SimplifiedTrack[]
+  tracks: Track<SimplifiedArtist>[]
 }
 
 export interface RecommendationsSeed {

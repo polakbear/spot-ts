@@ -1,9 +1,8 @@
 import { ExternalURL } from './ExternalURL';
-import { Artist, SimplifiedArtist } from './Artist';
 import { Album } from './Album';
-export declare class Track implements SimplifiedTrack {
+export declare class Track<T> {
     album: Album;
-    artists: Artist[];
+    artists: T[];
     available_markets: string[];
     duration_ms: number;
     external_urls: ExternalURL[];
@@ -13,14 +12,4 @@ export declare class Track implements SimplifiedTrack {
     popularity: boolean;
     uri: string;
     constructor(response: any);
-}
-export interface SimplifiedTrack {
-    artists: SimplifiedArtist[];
-    available_markets: string[];
-    duration_ms: number;
-    external_urls: ExternalURL[];
-    href: string;
-    id: string;
-    name: string;
-    uri: string;
 }
