@@ -1,0 +1,14 @@
+# deps
+node_modules
+
+.DS_Store
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# ide
+.idea
+
+build
