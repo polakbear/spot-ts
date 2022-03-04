@@ -53,14 +53,6 @@ export default class Spotify {
     return data.artists.map((artist: any) => new Artist(artist))
   }
 
-  public async getGenres(): Promise<string[]> {
-    const response: AxiosResponse = await this.request(
-      'recommendations/available-genre-seeds'
-    )
-    const data = this.handleResponse(response)
-    return data.genres
-  }
-
   public async getAlbum(id: string): Promise<Album> {
     const response: AxiosResponse = await this.request(`albums/${id}`)
     const data = this.handleResponse(response)
@@ -73,6 +65,14 @@ export default class Spotify {
     })
     const data = this.handleResponse(response)
     return data.albums.map((album: any) => new Album(album))
+  }
+
+  public async getGenres(): Promise<string[]> {
+    const response: AxiosResponse = await this.request(
+      'recommendations/available-genre-seeds'
+    )
+    const data = this.handleResponse(response)
+    return data.genres
   }
 
   public async getRecommendations(
