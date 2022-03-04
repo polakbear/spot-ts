@@ -2,148 +2,151 @@ import axios, {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
-  Method
-} from 'axios'
-import { Artist } from './model/Artist'
-import { Album } from './model/Album'
-import { AudioFeatures } from './model/AudioFeatures'
-import { Recommendations } from './model/Recommendations'
+  Method,
+} from 'axios';
+import { Artist } from './model/Artist';
+import { Album } from './model/Album';
+import { AudioFeatures } from './model/AudioFeatures';
+import { Recommendations } from './model/Recommendations';
 
-const DEFAULT_API = 'https://api.spotify.com/v1'
+const DEFAULT_API = 'https://api.spotify.com/v1';
 
 export default class Spotify {
-  public api: string
-  public token: string
-  public client: AxiosInstance
+  public api: string;
+  public token: string;
+  public client: AxiosInstance;
 
   constructor(token: string, api: string = DEFAULT_API) {
-    this.api = api
-    this.token = token
+    this.api = api;
+    this.token = token;
     this.client = axios.create({
-      validateStatus: status => status < 500
-    })
+      validateStatus: status => status < 500,
+    });
   }
 
   public setToken(token: string): void {
     if (token.trim() === '') {
-      throw new Error('Invalid token')
+      throw new Error('Invalid token');
     }
-    this.token = token
+    this.token = token;
   }
 
   public getToken(): string {
-    return this.token
+    return this.token;
   }
 
   public getAPI(): string {
-    return this.api
+    return this.api;
   }
 
   public async getArtist(id: string): Promise<Artist> {
-    const response: AxiosResponse = await this.request(`artists/${id}`)
-    return new Artist(this.handleResponse(response))
+    const response: AxiosResponse = await this.request(`artists/${id}`);
+    return new Artist(this.handleResponse(response));
   }
 
   public async getArtists(ids: string[]): Promise<Artist[]> {
     const response: AxiosResponse = await this.request('artists', {
-      ids: `${ids}`
-    })
+      ids: `${ids}`,
+    });
     return this.handleResponse(response).artists.map(
-      (artist: any) => new Artist(artist)
-    )
+      (artist: any) => new Artist(artist),
+    );
   }
 
   public async getAlbum(id: string): Promise<Album> {
-    const response: AxiosResponse = await this.request(`albums/${id}`)
-    return new Album(this.handleResponse(response))
+    const response: AxiosResponse = await this.request(`albums/${id}`);
+    return new Album(this.handleResponse(response));
   }
 
   public async getAlbums(ids: string[]): Promise<Album[]> {
     const response: AxiosResponse = await this.request('albums', {
-      ids: `${ids}`
-    })
+      ids: `${ids}`,
+    });
 
     return this.handleResponse(response).albums.map(
-      (album: any) => new Album(album)
-    )
+      (album: any) => new Album(album),
+    );
   }
 
   public async getGenres(): Promise<string[]> {
     const response: AxiosResponse = await this.request(
-      'recommendations/available-genre-seeds'
-    )
-    return this.handleResponse(response).genres
+      'recommendations/available-genre-seeds',
+    );
+    return this.handleResponse(response).genres;
   }
 
   public async getRecommendations(
-    query: AudioFeatures
+    query: AudioFeatures,
   ): Promise<Recommendations> {
-    query = this.addFormattedSeeds(query)
-    const response: AxiosResponse = await this.request('recommendations', query)
-    return this.handleResponse(response)
+    query = this.addFormattedSeeds(query);
+    const response: AxiosResponse = await this.request(
+      'recommendations',
+      query,
+    );
+    return this.handleResponse(response);
   }
 
   public request(
     endpoint: string,
     params?: AxiosRequestConfig['params'],
     headers?: Record<string, any>,
-    method: Method = 'GET'
+    method: Method = 'GET',
   ): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
         let request = {
           headers: { ...this.createHeaders(), ...headers },
           method,
-          url: `${this.getAPI()}/${endpoint}`
-        }
+          url: `${this.getAPI()}/${endpoint}`,
+        };
 
         if (params) {
-          request = { ...request, [this.key(method)]: params }
+          request = { ...request, [this.key(method)]: params };
         }
 
         this.client(request).then(resolve, e => {
-          reject(e)
-        })
+          reject(e);
+        });
       } catch (e) {
-        reject(e)
+        reject(e);
       }
-    })
+    });
   }
 
   private key = (method: Method) =>
-    ['PUT', 'POST', 'PATCH', 'DELETE'].includes(method) ? 'data' : 'params'
+    ['PUT', 'POST', 'PATCH', 'DELETE'].includes(method) ? 'data' : 'params';
 
   private createHeaders(): Record<string, any> {
     return {
       Authorization: `Bearer ${this.token}`,
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    };
   }
 
   public handleResponse = (response: AxiosResponse) => {
     if (response.status <= 204 && response.status >= 200) {
-      return response.data
+      return response.data;
     }
-    throw new Error(response.data.error)
-  }
+    throw new Error(response.data.error);
+  };
 
   private addFormattedSeeds = (query: AudioFeatures) => {
     if (query.seed_artists && query.seed_artists.length) {
       Object.assign(query, {
-        seed_artists: query.seed_artists.join(',')
-      })
+        seed_artists: query.seed_artists.join(','),
+      });
     }
     if (query.seed_genres && query.seed_genres.length) {
       Object.assign(query, {
-        seed_genres: query.seed_genres.join(',')
-      })
+        seed_genres: query.seed_genres.join(','),
+      });
     }
     if (query.seed_tracks && query.seed_tracks.length) {
       Object.assign(query, {
-        seed_tracks: query.seed_tracks.join(',')
-      })
+        seed_tracks: query.seed_tracks.join(','),
+      });
     }
 
-    return query
-  }
+    return query;
+  };
 }

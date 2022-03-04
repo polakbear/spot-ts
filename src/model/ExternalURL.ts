@@ -1,3 +1,3 @@
 export interface ExternalURL {
-    spotify: string
+  spotify: string;
 }
