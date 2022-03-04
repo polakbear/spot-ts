@@ -9,7 +9,7 @@ export declare class Track<T> {
     href: string;
     id: string;
     name: string;
-    popularity: boolean;
+    popularity: number;
     uri: string;
     constructor(response: any);
 }

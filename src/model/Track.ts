@@ -10,7 +10,7 @@ export class Track<T> {
   public href: string
   public id: string
   public name: string
-  public popularity: boolean
+  public popularity: number
   public uri: string
 
   constructor(response: any) {
