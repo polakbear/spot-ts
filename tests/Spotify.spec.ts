@@ -1,7 +1,11 @@
-import { expect } from 'chai'
+import { expect, use } from 'chai'
 import Spotify from '../src/Spotify'
 import { SinonStub, stub } from 'sinon'
 import { AxiosResponse } from 'axios'
+import 'mocha'
+import sinonChai = require('sinon-chai')
+
+use(sinonChai)
 
 const clientConfig = {
   headers: {
@@ -53,8 +57,61 @@ describe('Spotify', () => {
   })
 
   describe('request', () => {
-    beforeEach(() => {
-      // TODO: test request
+    describe('getArtist', () => {
+      beforeEach(() => {
+        httpMock.resolves({
+          data: {
+            external_urls: {
+              spotify: 'https://open.spotify.com/artists/08GQAI4eElDnROBrJRGE0X'
+            },
+            followers: {
+              href: null,
+              total: 7917837
+            },
+            genres: [
+              'album rock',
+              'classic rock',
+              'mellow gold',
+              'rock',
+              'soft rock',
+              'yacht rock'
+            ],
+            href: 'https://api.spotify.com/v1/artists/08GQAI4eElDnROBrJRGE0X',
+            id: '08GQAI4eElDnROBrJRGE0X',
+            images: [
+              {
+                height: 640,
+                url: 'https://i.scdn.co/image/ab6761610000e5eb249d55f2d68a44637905c57e',
+                width: 640
+              },
+              {
+                height: 320,
+                url: 'https://i.scdn.co/image/ab67616100005174249d55f2d68a44637905c57e',
+                width: 320
+              },
+              {
+                height: 160,
+                url: 'https://i.scdn.co/image/ab6761610000f178249d55f2d68a44637905c57e',
+                width: 160
+              }
+            ],
+            name: 'Fleetwood Mac',
+            popularity: 83,
+            type: 'artist',
+            uri: 'spotify:artist:08GQAI4eElDnROBrJRGE0X'
+          },
+          status: 200
+        })
+      })
+
+      it('should call the client with the right parameters', async () => {
+        await spotify.getArtist('08GQAI4eElDnROBrJRGE0X')
+        expect(httpMock).to.have.been.calledWith({
+          ...clientConfig,
+          method: 'GET',
+          url: 'https://api.spotify.com/v1/artists/08GQAI4eElDnROBrJRGE0X'
+        })
+      })
     })
   })
 
