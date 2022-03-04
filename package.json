@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "clean": "rimraf ./build",
-    "build": "yarn run clear && tsc",
+    "build": "yarn run clean && tsc",
     "dev": "tsc -w",
     "lint": "eslint '*/**/*.{ts}' --quiet --fix",
     "test": "mocha -r ts-node/register tests/**/*.spec.ts",
