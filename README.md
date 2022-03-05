@@ -1,3 +1,3 @@
 # spot-ts
 
-minimal typescript library to do requests towards spotify's web API
+minimal (read: not a complete API) typescript library to do requests towards spotify's web API
