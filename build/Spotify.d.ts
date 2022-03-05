@@ -19,5 +19,4 @@ export default class Spotify {
     private key;
     private createHeaders;
     handleResponse: (response: AxiosResponse) => any;
-    private addFormattedSeeds;
 }

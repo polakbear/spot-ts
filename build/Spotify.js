@@ -62,24 +62,6 @@ var Spotify = /** @class */ (function () {
             }
             throw new Error(response.data.error);
         };
-        this.addFormattedSeeds = function (query) {
-            if (query.seed_artists && query.seed_artists.length) {
-                Object.assign(query, {
-                    seed_artists: query.seed_artists.join(','),
-                });
-            }
-            if (query.seed_genres && query.seed_genres.length) {
-                Object.assign(query, {
-                    seed_genres: query.seed_genres.join(','),
-                });
-            }
-            if (query.seed_tracks && query.seed_tracks.length) {
-                Object.assign(query, {
-                    seed_tracks: query.seed_tracks.join(','),
-                });
-            }
-            return query;
-        };
         this.api = api;
         this.token = token;
         this.client = axios_1.default.create({
@@ -172,9 +154,7 @@ var Spotify = /** @class */ (function () {
             var response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        query = this.addFormattedSeeds(query);
-                        return [4 /*yield*/, this.request('recommendations', query)];
+                    case 0: return [4 /*yield*/, this.request('recommendations', query)];
                     case 1:
                         response = _a.sent();
                         return [2 /*return*/, this.handleResponse(response)];
