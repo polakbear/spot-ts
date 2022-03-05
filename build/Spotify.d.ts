@@ -1,8 +1,5 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
-import { Artist } from './model/Artist';
-import { Album } from './model/Album';
-import { AudioFeatures } from './model/AudioFeatures';
-import { Recommendations } from './model/Recommendations';
+import { Artist, Album, Recommendations, RecommendationsOptions, AudioFeatures } from './model';
 export default class Spotify {
     api: string;
     token: string;
@@ -16,7 +13,8 @@ export default class Spotify {
     getAlbum(id: string): Promise<Album>;
     getAlbums(ids: string[]): Promise<Album[]>;
     getGenres(): Promise<string[]>;
-    getRecommendations(query: AudioFeatures): Promise<Recommendations>;
+    getRecommendations(query: RecommendationsOptions): Promise<Recommendations>;
+    getAudioFeatures(id: string): Promise<AudioFeatures>;
     request(endpoint: string, params?: AxiosRequestConfig['params'], headers?: Record<string, any>, method?: Method): Promise<any>;
     private key;
     private createHeaders;

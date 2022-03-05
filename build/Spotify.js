@@ -48,8 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = require("axios");
-var Artist_1 = require("./model/Artist");
-var Album_1 = require("./model/Album");
+var model_1 = require("./model");
 var DEFAULT_API = 'https://api.spotify.com/v1';
 var Spotify = /** @class */ (function () {
     function Spotify(token, api) {
@@ -66,17 +65,17 @@ var Spotify = /** @class */ (function () {
         this.addFormattedSeeds = function (query) {
             if (query.seed_artists && query.seed_artists.length) {
                 Object.assign(query, {
-                    seed_artists: query.seed_artists.join(',')
+                    seed_artists: query.seed_artists.join(','),
                 });
             }
             if (query.seed_genres && query.seed_genres.length) {
                 Object.assign(query, {
-                    seed_genres: query.seed_genres.join(',')
+                    seed_genres: query.seed_genres.join(','),
                 });
             }
             if (query.seed_tracks && query.seed_tracks.length) {
                 Object.assign(query, {
-                    seed_tracks: query.seed_tracks.join(',')
+                    seed_tracks: query.seed_tracks.join(','),
                 });
             }
             return query;
@@ -84,7 +83,7 @@ var Spotify = /** @class */ (function () {
         this.api = api;
         this.token = token;
         this.client = axios_1.default.create({
-            validateStatus: function (status) { return status < 500; }
+            validateStatus: function (status) { return status < 500; },
         });
     }
     Spotify.prototype.setToken = function (token) {
@@ -107,7 +106,7 @@ var Spotify = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.request("artists/".concat(id))];
                     case 1:
                         response = _a.sent();
-                        return [2 /*return*/, new Artist_1.Artist(this.handleResponse(response))];
+                        return [2 /*return*/, new model_1.Artist(this.handleResponse(response))];
                 }
             });
         });
@@ -118,11 +117,11 @@ var Spotify = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.request('artists', {
-                            ids: "".concat(ids)
+                            ids: "".concat(ids),
                         })];
                     case 1:
                         response = _a.sent();
-                        return [2 /*return*/, this.handleResponse(response).artists.map(function (artist) { return new Artist_1.Artist(artist); })];
+                        return [2 /*return*/, this.handleResponse(response).artists.map(function (artist) { return new model_1.Artist(artist); })];
                 }
             });
         });
@@ -135,7 +134,7 @@ var Spotify = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.request("albums/".concat(id))];
                     case 1:
                         response = _a.sent();
-                        return [2 /*return*/, new Album_1.Album(this.handleResponse(response))];
+                        return [2 /*return*/, new model_1.Album(this.handleResponse(response))];
                 }
             });
         });
@@ -146,11 +145,11 @@ var Spotify = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.request('albums', {
-                            ids: "".concat(ids)
+                            ids: "".concat(ids),
                         })];
                     case 1:
                         response = _a.sent();
-                        return [2 /*return*/, this.handleResponse(response).albums.map(function (album) { return new Album_1.Album(album); })];
+                        return [2 /*return*/, this.handleResponse(response).albums.map(function (album) { return new model_1.Album(album); })];
                 }
             });
         });
@@ -183,6 +182,19 @@ var Spotify = /** @class */ (function () {
             });
         });
     };
+    Spotify.prototype.getAudioFeatures = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.request("audio-features/".concat(id))];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, new model_1.AudioFeatures(this.handleResponse(response))];
+                }
+            });
+        });
+    };
     Spotify.prototype.request = function (endpoint, params, headers, method) {
         var _this = this;
         if (method === void 0) { method = 'GET'; }
@@ -192,7 +204,7 @@ var Spotify = /** @class */ (function () {
                 var request = {
                     headers: __assign(__assign({}, _this.createHeaders()), headers),
                     method: method,
-                    url: "".concat(_this.getAPI(), "/").concat(endpoint)
+                    url: "".concat(_this.getAPI(), "/").concat(endpoint),
                 };
                 if (params) {
                     request = __assign(__assign({}, request), (_a = {}, _a[_this.key(method)] = params, _a));
@@ -209,7 +221,7 @@ var Spotify = /** @class */ (function () {
     Spotify.prototype.createHeaders = function () {
         return {
             Authorization: "Bearer ".concat(this.token),
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         };
     };
     return Spotify;
