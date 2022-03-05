@@ -3,9 +3,9 @@ export interface RecommendationsOptions {
   market?: string;
 
   /** A list of seed artists, tracks, and genres. */
-  seed_artists?: string[];
-  seed_tracks?: string[];
-  seed_genres?: string[];
+  seed_artists?: string;
+  seed_tracks?: string;
+  seed_genres?: string;
 
   /** A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the
    * track is acoustic. */
