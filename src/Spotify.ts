@@ -4,10 +4,13 @@ import axios, {
   AxiosResponse,
   Method,
 } from 'axios';
-import { Artist } from './model/Artist';
-import { Album } from './model/Album';
-import { AudioFeatures } from './model/AudioFeatures';
-import { Recommendations } from './model/Recommendations';
+import {
+  Artist,
+  Album,
+  Recommendations,
+  RecommendationsOptions,
+  AudioFeatures,
+} from './model';
 
 const DEFAULT_API = 'https://api.spotify.com/v1';
 
@@ -76,7 +79,7 @@ export default class Spotify {
   }
 
   public async getRecommendations(
-    query: AudioFeatures,
+    query: RecommendationsOptions,
   ): Promise<Recommendations> {
     query = this.addFormattedSeeds(query);
     const response: AxiosResponse = await this.request(
@@ -84,6 +87,11 @@ export default class Spotify {
       query,
     );
     return this.handleResponse(response);
+  }
+
+  public async getAudioFeatures(id: string): Promise<AudioFeatures> {
+    const response: AxiosResponse = await this.request(`audio-features/${id}`);
+    return new AudioFeatures(this.handleResponse(response));
   }
 
   public request(
@@ -130,7 +138,7 @@ export default class Spotify {
     throw new Error(response.data.error);
   };
 
-  private addFormattedSeeds = (query: AudioFeatures) => {
+  private addFormattedSeeds = (query: RecommendationsOptions) => {
     if (query.seed_artists && query.seed_artists.length) {
       Object.assign(query, {
         seed_artists: query.seed_artists.join(','),
