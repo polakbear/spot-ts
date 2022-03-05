@@ -37,6 +37,7 @@ describe('Spotify', () => {
     expect(spotify.getArtists).to.exist;
     expect(spotify.getGenres).to.exist;
     expect(spotify.getRecommendations).to.exist;
+    expect(spotify.getAudioFeatures).to.exist;
   });
 
   it('should create a spotify instance with valid token and api', () => {

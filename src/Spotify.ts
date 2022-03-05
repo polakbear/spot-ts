@@ -81,7 +81,6 @@ export default class Spotify {
   public async getRecommendations(
     query: RecommendationsOptions,
   ): Promise<Recommendations> {
-    query = this.addFormattedSeeds(query);
     const response: AxiosResponse = await this.request(
       'recommendations',
       query,
@@ -136,25 +135,5 @@ export default class Spotify {
       return response.data;
     }
     throw new Error(response.data.error);
-  };
-
-  private addFormattedSeeds = (query: RecommendationsOptions) => {
-    if (query.seed_artists && query.seed_artists.length) {
-      Object.assign(query, {
-        seed_artists: query.seed_artists.join(','),
-      });
-    }
-    if (query.seed_genres && query.seed_genres.length) {
-      Object.assign(query, {
-        seed_genres: query.seed_genres.join(','),
-      });
-    }
-    if (query.seed_tracks && query.seed_tracks.length) {
-      Object.assign(query, {
-        seed_tracks: query.seed_tracks.join(','),
-      });
-    }
-
-    return query;
   };
 }
