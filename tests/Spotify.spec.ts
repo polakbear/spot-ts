@@ -70,14 +70,7 @@ describe('Spotify', () => {
               href: null,
               total: 7917837,
             },
-            genres: [
-              'album rock',
-              'classic rock',
-              'mellow gold',
-              'rock',
-              'soft rock',
-              'yacht rock',
-            ],
+            genres: ['album rock', 'classic rock'],
             href: 'https://api.spotify.com/v1/artists/08GQAI4eElDnROBrJRGE0X',
             id: '08GQAI4eElDnROBrJRGE0X',
             images: [
